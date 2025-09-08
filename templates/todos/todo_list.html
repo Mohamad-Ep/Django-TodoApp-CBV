@@ -1,0 +1,77 @@
+{% extends 'main_template.html' %}
+
+
+{% block title %}
+    Todo List
+{% endblock title %}
+    
+
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">لیست تسک‌ها</h5>
+                </div>
+                <div class="card-body">
+                    <!-- افزودن تسک -->
+                    <form class="d-flex mb-3">
+                        <input type="text" class="form-control me-2" placeholder="تسک جدید را وارد کنید...">
+                        <button class="btn btn-success"><i class="bi bi-plus-lg"></i> افزودن</button>
+                    </form>
+                    <!-- جدول تسک‌ها -->
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>تسک</th>
+                                <th class="text-center">وضعیت</th>
+                                <th class="text-end">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="task1">مثال: یادگیری Django</td>
+                                <td class="text-center"><span class="badge bg-warning">در حال انجام</span></td>
+                                <td class="text-end">
+                                    <a href="todo_edit.html" class="btn btn-sm btn-outline-primary"><i
+                                            class="bi bi-pencil-square"></i></a>
+                                    <button type="button" class="btn btn-sm btn-outline-success"
+                                        onclick="completeTask('task1')"><i class="bi bi-check2-circle"></i></button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                        onclick="deleteTask(this)"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td id="task2">مثال: تمرین Bootstrap</td>
+                                <td class="text-center"><span class="badge bg-success">انجام شد</span></td>
+                                <td class="text-end">
+                                    <a href="todo_edit.html" class="btn btn-sm btn-outline-primary"><i
+                                            class="bi bi-pencil-square"></i></a>
+                                    <button type="button" class="btn btn-sm btn-outline-success"
+                                        onclick="completeTask('task2')"><i class="bi bi-check2-circle"></i></button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                        onclick="deleteTask(this)"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function completeTask(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle("completed");
+            }
+        }
+        function deleteTask(btn) {
+            const row = btn.closest("tr");
+            row.remove();
+        }
+    </script>
+{% endblock content %}
+    

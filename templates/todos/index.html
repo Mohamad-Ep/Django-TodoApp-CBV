@@ -1,0 +1,34 @@
+{% extends 'main_template.html' %}
+
+
+{% block title %}
+    home
+{% endblock title %}
+    
+
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">📝 Todo App</a>
+            
+            {% if user.is_authenticated %}
+                <div>
+                    <a class="btn btn-sm btn-outline-light" href="{% url 'todos:todolist' %}">لیست تسک ها</a>
+                    <a class="btn btn-sm btn-outline-light" href="{% url 'accounts:logout' %}">خروج</a>
+                </div>
+                {% else %}
+                <div>
+                    <a class="btn btn-sm btn-outline-light" href="{% url 'todos:todolist' %}">لیست تسک ها</a>
+                    <a class="btn btn-sm btn-outline-light" href="{% url 'accounts:login' %}">ورود</a>
+                </div>
+            {% endif %}
+                
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- محتوا اینجا لود می‌شود -->
+    </div>
+{% endblock content %}
+    

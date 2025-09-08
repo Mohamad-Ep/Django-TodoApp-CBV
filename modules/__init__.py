@@ -44,6 +44,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 import jwt
 from jwt.exceptions import ExpiredSignatureError,InvalidTokenError
+from django.utils.translation import gettext_lazy as _
+
+# signals
+from django.dispatch import receiver
+from django.db.models.signals import post_migrate,post_save,pre_save,pre_delete
 
 # Tests
 from django.test import TestCase,SimpleTestCase

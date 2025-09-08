@@ -1,0 +1,40 @@
+{% extends 'main_template.html' %}
+
+{% block title %}
+    register
+{% endblock title %}
+    
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white text-center">
+                    <h5>ثبت‌نام</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">ایمیل</label>
+                            {{form.email}}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">رمز عبور</label>
+                            {{form.password1}}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">تکرار رمز عبور</label>
+                            {{form.password2}}
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">ثبت‌نام</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'accounts:login' %}">ورود</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    
