@@ -9,6 +9,8 @@ class Todo(models.Model):
     update_date = models.DateTimeField(auto_now=True, verbose_name=_('تاریخ ویرایش'))
     published_date = models.DateTimeField(default=datetime.now, verbose_name=_('تاریخ انتشار'))
     is_active = models.BooleanField(default=True, verbose_name=_('فعال/غیرفعال'))
+    is_done = models.BooleanField(default=False, verbose_name=_('انجام شده'))
+    author = models.ForeignKey("accounts.CustomUser", verbose_name=_("نویسنده"), on_delete=models.CASCADE,null=True)
     
     def __str__(self):
         return self.title

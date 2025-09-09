@@ -1,0 +1,6 @@
+
+    <form class="d-flex mb-3" method="post" action="{% url 'todos:create-todo' %}">
+        {% csrf_token %}
+        {{form.title}}
+        <button type="submit" class="btn btn-success"><i class="bi bi-plus-lg"></i> افزودن</button>
+    </form>

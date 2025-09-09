@@ -1,5 +1,5 @@
 {% extends 'main_template.html' %}
-
+{% load render_partial %}
 
 {% block title %}
     Todo List
@@ -16,10 +16,8 @@
                 </div>
                 <div class="card-body">
                     <!-- افزودن تسک -->
-                    <form class="d-flex mb-3">
-                        <input type="text" class="form-control me-2" placeholder="تسک جدید را وارد کنید...">
-                        <button class="btn btn-success"><i class="bi bi-plus-lg"></i> افزودن</button>
-                    </form>
+                    {% render_partial 'todos:create-todo' %}
+                    
                     <!-- جدول تسک‌ها -->
                     <table class="table table-hover align-middle">
                         <thead>
@@ -30,30 +28,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td id="task1">مثال: یادگیری Django</td>
-                                <td class="text-center"><span class="badge bg-warning">در حال انجام</span></td>
-                                <td class="text-end">
-                                    <a href="todo_edit.html" class="btn btn-sm btn-outline-primary"><i
-                                            class="bi bi-pencil-square"></i></a>
-                                    <button type="button" class="btn btn-sm btn-outline-success"
-                                        onclick="completeTask('task1')"><i class="bi bi-check2-circle"></i></button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger"
-                                        onclick="deleteTask(this)"><i class="bi bi-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td id="task2">مثال: تمرین Bootstrap</td>
-                                <td class="text-center"><span class="badge bg-success">انجام شد</span></td>
-                                <td class="text-end">
-                                    <a href="todo_edit.html" class="btn btn-sm btn-outline-primary"><i
-                                            class="bi bi-pencil-square"></i></a>
-                                    <button type="button" class="btn btn-sm btn-outline-success"
-                                        onclick="completeTask('task2')"><i class="bi bi-check2-circle"></i></button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger"
-                                        onclick="deleteTask(this)"><i class="bi bi-trash"></i></button>
-                                </td>
-                            </tr>
+                            
+                            {% for todo in todos %}
+                                <tr>
+                                    <td id="task1">{{todo.title}}</td>
+                                    <td class="text-center">
+                                        
+                                        {% if todo.is_done %}
+                                            <span class="badge bg-success">انجام شده</span>
+                                            {% else %}
+                                            <span class="badge bg-warning">در حال انجام</span>
+                                        {% endif %}
+                                            
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="{% url 'todos:update-todo' todo.pk %}" class="btn btn-sm btn-outline-primary"><i
+                                                class="bi bi-pencil-square"></i></a>
+                                        <button type="button" class="btn btn-sm btn-outline-success"
+                                            onclick="completeTask('task1')">
+                                            <a style="text-decoration:none;color: inherit;" href="{% url 'todos:complate-todo' todo.pk %}"><i class="bi bi-check2-circle"></i></a>
+                                        </button>
+
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            onclick="deleteTask(this)">
+                                            <a style="text-decoration:none;color: inherit;" href="{% url 'todos:delete-todo' todo.pk %}">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                            
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                                
                         </tbody>
                     </table>
                 </div>

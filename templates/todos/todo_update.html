@@ -1,0 +1,33 @@
+{% extends 'main_template.html' %}
+
+{% block title %}
+    Todo Update
+{% endblock title %}
+    
+
+
+{% block content %}
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h5>ویرایش تسک</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">متن تسک</label>
+                            {{form.title}}
+                        </div>
+                        <button type="submit" class="btn btn-warning">ذخیره تغییرات</button>
+                        <a href="{% url 'todos:todolist' %}" class="btn btn-secondary">بازگشت</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+    
