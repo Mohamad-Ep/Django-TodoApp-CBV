@@ -2,7 +2,9 @@ version: "3.9"
 
 services:
     backend:
-        container_name: django-backend
+
+        container_name: django-practice
+
         build: .
         
         volumes:
@@ -11,4 +13,4 @@ services:
         ports:
             - "8000:8000"
         
-        command: python manage.py runserver 0.0.0.0:8000
+        command: sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
