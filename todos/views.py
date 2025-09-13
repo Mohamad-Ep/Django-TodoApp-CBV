@@ -56,7 +56,7 @@ class DeletodoView(LoginRequiredMixin,View):
         return redirect(self.success_url)
     
     def get_queryset(self):
-        return self.model.objects.filter(author=self.request.user)
+        return Todo.objects.filter(author=self.request.user,is_active=True)
 # ________________________________________________
 
 class UpdateTodoView(LoginRequiredMixin,UpdateView):
