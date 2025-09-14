@@ -3,10 +3,11 @@ from django.views.generic.edit import CreateView,UpdateView,DeleteView,FormView
 from django.views.generic.list import ListView
 from django.views import View
 from django.views.generic.base import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from .models import Todo
 from .forms import TodoForm
 from django.urls import reverse_lazy
+from django.http import HttpResponseNotFound
 # ________________________________________________
 
 class IndexView(TemplateView):
@@ -52,11 +53,11 @@ class DeletodoView(LoginRequiredMixin,View):
     
     def get(self, request, *args, **kwargs):
         todo = get_object_or_404(Todo,pk=self.kwargs['pk'])
-        todo.delete()
-        return redirect(self.success_url)
-    
-    def get_queryset(self):
-        return self.model.objects.filter(author=self.request.user)
+        
+        if todo.author == request.user :
+            todo.delete()
+            return redirect(self.success_url)
+        return HttpResponseNotFound(content="صفحه موردنظر وجود ندارد")
 # ________________________________________________
 
 class UpdateTodoView(LoginRequiredMixin,UpdateView):
@@ -64,11 +65,19 @@ class UpdateTodoView(LoginRequiredMixin,UpdateView):
     model = Todo
     form_class = TodoForm
     success_url = reverse_lazy('todos:todolist')
+         
+    def get_queryset(self):
+        """ User permission for change object"""        
+        return Todo.objects.filter(author=self.request.user,is_active=True)
 # ________________________________________________
 
 class ComplateTodoView(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
         todo = get_object_or_404(Todo,pk=self.kwargs['pk'])
+        
+        if todo.author != request.user :
+            return HttpResponseNotFound(content="صفحه موردنظر وجود ندارد")
+        
         if not todo.is_done:
             todo.is_done = True
             todo.save()
@@ -77,4 +86,5 @@ class ComplateTodoView(LoginRequiredMixin,View):
             todo.save()
             
         return redirect('todos:todolist')
+
 # ________________________________________________
