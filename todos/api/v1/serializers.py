@@ -31,9 +31,7 @@ class TodoSerializer(serializers.ModelSerializer):
         return rep 
     
     def create(self, validated_data):
-        validated_data['author'] = (
-            Profile.objects.get(user_id=self.context.get('request').user.id)
-        )
+        validated_data['author'] = self.context.get('request').user
         return super().create(validated_data)
     
 # ________________________________________________

@@ -25,6 +25,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include('accounts.urls', namespace='accounts'), name='accounts'),
     path("", include('todos.urls', namespace='todos'), name='todos'),
+    
+    # Basic Auth for DRF
+    path("api-auth/", include("rest_framework.urls")),
 ]
 
 if settings.DEBUG:
