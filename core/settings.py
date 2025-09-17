@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     'drf_yasg',
+    'mail_templated',
     
     # apps
     "accounts",
@@ -135,3 +136,23 @@ STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles/")
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# _____________________________________________________________________________________
+
+# Develop Email Settings - smtp4dev
+# ==================================
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+# Host for sending e-mail.
+EMAIL_HOST = "smtp4dev"  # just for Development
+
+# Port for sending e-mail.
+EMAIL_PORT = 25
+
+# Optional SMTP authentication information for EMAIL_HOST.
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
+EMAIL_USE_TLS = False
+
+# _____________________________________________________________________________________

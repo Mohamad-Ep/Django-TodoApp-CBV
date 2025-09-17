@@ -39,7 +39,7 @@ class CustomUserAdmin(UserAdmin):
     form = UserChangeForm
     add_form = AdminUserCreationForm
     change_password_form = AdminPasswordChangeForm
-    list_display = ("email", "is_active", "is_admin")
+    list_display = ("email", "is_active", "is_admin","is_verficated")
     list_filter = ("is_admin", "is_superuser", "is_active", "groups")
     search_fields = ("email", "first_name", "last_name")
     ordering = ("email",)

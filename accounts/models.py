@@ -54,6 +54,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     update_date = models.DateTimeField(auto_now=True, verbose_name=_('تاریخ ویرایش'))
     is_active = models.BooleanField(default=False, verbose_name=_("فعال/غیرفعال"))
     is_admin = models.BooleanField(default=False, verbose_name=_("کاربر عادی / کاربر ادمین"))
+    is_verficated = models.BooleanField(default=False, verbose_name=_("تاییدشده/تاییدنشده"))
     
     
     objects = CustomUserManager()
