@@ -19,4 +19,4 @@ jobs:
     - name: Wait for containers to be ready
       run: sleep 7
     - name: Run Testing Project
-      run: docker exec django-backend sh -c "flake8 && pytest ."
+      run: docker exec django-practice sh -c "flake8 && pytest"
