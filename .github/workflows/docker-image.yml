@@ -1,0 +1,22 @@
+name: Docker Image Todo App
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Docker Compose
+      run: docker compose up -d
+    - name: Wait for containers to be ready
+      run: sleep 7
+    - name: Run Testing Project
+      run: docker exec django-backend sh -c "flake8 && pytest ."
