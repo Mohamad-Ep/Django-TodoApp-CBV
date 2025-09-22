@@ -6,9 +6,10 @@ from django.contrib.auth.forms import (
     UserChangeForm,
 )
 from django.utils.translation import gettext_lazy as _
-from .models import CustomUser,Profile
+from .models import CustomUser, Profile
 
 # ________________________________________________
+
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
@@ -39,7 +40,7 @@ class CustomUserAdmin(UserAdmin):
     form = UserChangeForm
     add_form = AdminUserCreationForm
     change_password_form = AdminPasswordChangeForm
-    list_display = ("email", "is_active", "is_admin","is_verficated")
+    list_display = ("email", "is_active", "is_admin", "is_verficated")
     list_filter = ("is_admin", "is_superuser", "is_active", "groups")
     search_fields = ("email", "first_name", "last_name")
     ordering = ("email",)
@@ -47,11 +48,15 @@ class CustomUserAdmin(UserAdmin):
         "groups",
         "user_permissions",
     )
-    
-admin.site.register(CustomUser,CustomUserAdmin)
+
+
+admin.site.register(CustomUser, CustomUserAdmin)
 # ________________________________________________
+
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("user","first_name","last_name")
+    list_display = ("user", "first_name", "last_name")
+
+
 # ________________________________________________

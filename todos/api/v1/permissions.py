@@ -1,5 +1,7 @@
 from rest_framework import permissions
+
 # ________________________________________________
+
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
@@ -15,5 +17,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Instance must have an attribute named `owner`.
         return obj.author == request.user
+
 
 # ________________________________________________

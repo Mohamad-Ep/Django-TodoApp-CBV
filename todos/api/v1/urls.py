@@ -1,5 +1,6 @@
-from django.urls import path,include
-from .views import TodoListApiView,TodoDetailsApiView
+from django.urls import path, include
+from .views import TodoListApiView, TodoDetailsApiView
+
 # ________________________________________________
 
 app_name = 'api-v1'
