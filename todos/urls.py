@@ -1,5 +1,6 @@
 from django.urls import path, include
-from todos import views as views  
+from todos import views as views
+
 # ________________________________________________
 
 app_name = 'todos'
