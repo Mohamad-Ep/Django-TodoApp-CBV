@@ -9,6 +9,36 @@ services:
         ports:
             - "8000:8000"        
         command: sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
+        depends_on:
+            - redis
+
+    redis:
+        image: redis:latest
+        restart: always
+        container_name: redis1
+        ports:
+            - "6379:6379"
+        command: redis-server --save 60 1 --loglevel warning
+
+    worker-celery:
+        build: .
+        container_name: worker-celery1
+        volumes:
+            - .:/app
+        command: celery -A core worker --loglevel=info
+        depends_on:
+            - redis
+            - backend
+
+    beat-celery:
+        build: .
+        container_name: beat-celery1
+        volumes:
+        - .:/app
+        command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+        depends_on:
+        - redis
+        - backend
 
     smtp4dev:
         image: rnwood/smtp4dev:v3

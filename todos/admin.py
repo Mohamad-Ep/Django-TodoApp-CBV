@@ -15,5 +15,7 @@ class TodoAdmin(admin.ModelAdmin):
         'author',
     )
 
+    list_editable = ['is_active', 'is_done']
+
 
 # ________________________________________________
