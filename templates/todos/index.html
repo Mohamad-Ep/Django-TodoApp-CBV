@@ -11,7 +11,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="#">📝 Todo App</a>
-            
+            <a class="btn btn-sm btn-primary" href="{% url 'todos:api-v1:get-weather' %}">نمایش آب و هوا</a> 
             {% if user.is_authenticated %}
                 <div>
                     <a class="btn btn-sm btn-outline-light" href="{% url 'todos:todolist' %}">لیست تسک ها</a>
@@ -22,8 +22,7 @@
                     <a class="btn btn-sm btn-outline-light" href="{% url 'todos:todolist' %}">لیست تسک ها</a>
                     <a class="btn btn-sm btn-outline-light" href="{% url 'accounts:login' %}">ورود</a>
                 </div>
-            {% endif %}
-                
+            {% endif %} 
         </div>
     </nav>
 

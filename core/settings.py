@@ -160,7 +160,7 @@ EMAIL_USE_TLS = False
 # _____________________________________________________________________________________
 
 # celery settings :
-# ====================
+# ==================
 
 # Celery Configuration Options
 
@@ -178,4 +178,18 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 #     }
 # }
 
+# _____________________________________________________________________________________
+
+# Redis (caching) settings :
+# ==========================
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
 # _____________________________________________________________________________________
