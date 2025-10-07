@@ -9,6 +9,7 @@ from .permissions import IsOwnerOrReadOnly
 import requests
 from rest_framework.decorators import api_view
 from django.views.decorators.cache import cache_page
+
 # ________________________________________________
 
 
@@ -67,15 +68,19 @@ class TodoDetailsApiView(generics.RetrieveUpdateDestroyAPIView):
 # ===========
 
 @api_view(['GET'])
-@cache_page(key_prefix='weather_tehran',timeout=60*20)
+@cache_page(key_prefix='weather_tehran', timeout=60 * 20)
 def get_weathermap(request):
-    """ getting weather api at Tehran City """
-    
-    params = {'q':'Tehran','lang':'fa','appid':'4a8e6acb730d122b707e6bb73b7c1cfb'}
-    response = requests.get('https://api.openweathermap.org/data/2.5/weather?',params)
-    
+    """getting weather api at Tehran City"""
+
+    params = {'q': 'Tehran', 'lang': 'fa', 'appid': '4a8e6acb730d122b707e6bb73b7c1cfb'}
+    response = requests.get('https://api.openweathermap.org/data/2.5/weather?', params)
+
     if response.status_code == 200:
         data = response.json()
-        return Response(data=data,status=status.HTTP_200_OK)
-    return Response(data={'details':'page is not Found'},status=status.HTTP_404_NOT_FOUND)
+        return Response(data=data, status=status.HTTP_200_OK)
+    return Response(
+        data={'details': 'page is not Found'}, status=status.HTTP_404_NOT_FOUND
+    )
+
+
 # ________________________________________________
