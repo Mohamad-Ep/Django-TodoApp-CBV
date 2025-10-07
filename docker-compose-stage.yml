@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+    backend:
+        container_name: django-practice
+        build: .        
+        volumes:
+            - .:/app
+            - static_volume:/app/static
+            - media_volume:/app/media
+        ports:
+            - "8000:8000"        
+        command: sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn core.wsgi:application --bind 0.0.0.0:8000"
+        depends_on:
+            - redis
+
+    redis:
+        image: redis:latest
+        restart: always
+        container_name: redis1
+        ports:
+            - "6379:6379"
+        command: redis-server --save 60 1 --loglevel warning
+
+    worker-celery:
+        build: .
+        container_name: worker-celery1
+        volumes:
+            - .:/app
+        command: celery -A core worker --loglevel=info
+        depends_on:
+            - redis
+            - backend
+
+    beat-celery:
+        build: .
+        container_name: beat-celery1
+        volumes:
+        - .:/app
+        command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+        depends_on:
+        - redis
+        - backend
+    
+    nginx:
+        image: nginx
+        container_name: nginx1
+        restart: always
+        ports: 
+        - "80:80"
+        depends_on:
+            - redis
+            - backend
+        volumes:
+        - ./default.conf:/etc/nginx/conf.d/default.conf
+        - static_volume:/home/app/static
+        - media_volume:/home/app/media
+
+volumes:
+  static_volume:
+  media_volume:
