@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-^&)_6wix@&y$+cbhr_@77t36fj40hsle4+&f^f(*e=y-g4$6wi"
+SECRET_KEY = config("SECRET_KEY",default="test")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG",cast=bool,default=True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*"
+)
 
 
 # Application definition
@@ -89,8 +92,12 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": config("PGDB_ENGINE",default="django.db.backends.postgresql"),
+        "NAME": config("PGDB_NAME",default="postgres"),
+        "USER": config("PGDB_USER",default="postgres"),
+        "PASSWORD": config("PGDB_PASS",default="postgres"),
+        "HOST": config("PGDB_HOST",default="localhost"),
+        "PORT": config("PGDB_PORT",default="5432"),        
     }
 }
 

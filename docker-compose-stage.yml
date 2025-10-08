@@ -10,9 +10,29 @@ services:
             - media_volume:/app/media
         ports:
             - "8000:8000"        
-        command: sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn core.wsgi:application --bind 0.0.0.0:8000"
+        command: sh ./entrypoint.sh
         depends_on:
-            - redis
+            db:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+    
+    db:
+        container_name: pg-db1
+        image: postgres:15-alpine
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        env_file:
+            - .env
+        restart: always
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
 
     redis:
         image: redis:latest
@@ -21,6 +41,12 @@ services:
         ports:
             - "6379:6379"
         command: redis-server --save 60 1 --loglevel warning
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 5s
 
     worker-celery:
         build: .
@@ -29,33 +55,39 @@ services:
             - .:/app
         command: celery -A core worker --loglevel=info
         depends_on:
-            - redis
-            - backend
-
+            redis:
+                condition: service_healthy
+            backend:
+                condition: service_started
     beat-celery:
         build: .
         container_name: beat-celery1
         volumes:
-        - .:/app
+            - .:/app
         command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
         depends_on:
-        - redis
-        - backend
+            redis:
+                condition: service_healthy
+            backend:
+                condition: service_started
     
     nginx:
         image: nginx
         container_name: nginx1
         restart: always
         ports: 
-        - "80:80"
+            - "80:80"
         depends_on:
-            - redis
-            - backend
+            redis:
+                condition: service_healthy
+            backend:
+                condition: service_started
         volumes:
-        - ./default.conf:/etc/nginx/conf.d/default.conf
-        - static_volume:/home/app/static
-        - media_volume:/home/app/media
+            - ./default.conf:/etc/nginx/conf.d/default.conf
+            - static_volume:/home/app/static
+            - media_volume:/home/app/media
 
 volumes:
   static_volume:
   media_volume:
+  postgres_data:

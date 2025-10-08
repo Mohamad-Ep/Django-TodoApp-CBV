@@ -27,3 +27,4 @@ django-celery-beat
 django-redis
 gunicorn
 django-render-partial
+psycopg2-binary
