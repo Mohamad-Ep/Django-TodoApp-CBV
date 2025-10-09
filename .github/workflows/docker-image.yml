@@ -17,6 +17,6 @@ jobs:
     - name: Setup Docker Compose
       run: docker compose up -d
     - name: Wait for containers to be ready
-      run: sleep 15
+      run: sleep 20
     - name: Run Testing Project
-      run: docker exec django-practice sh -c "flake8 && pytest"
+      run: docker compose exec -T backend sh -c "flake8 && pytest"
